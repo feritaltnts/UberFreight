@@ -7,14 +7,22 @@ export class CarriersService {
   constructor(private prisma: PrismaService) {}
 
   async createCarrier(createCarrierDto: CreateCarrierDto) {
-    return this.prisma.carrier.create({
-      data: {
-        name: createCarrierDto.name,
-      },
-    });
+    try {
+      return await this.prisma.carrier.create({
+        data: {
+          name: createCarrierDto.name,
+        },
+      });
+    } catch (error) {
+      throw new Error(`Carrier creation failed: ${error.message}`);
+    }
   }
 
   async getCarrier() {
-    return this.prisma.carrier.findMany();
+    try {
+      return await this.prisma.carrier.findMany();
+    } catch (error) {
+      throw new Error(`Failed to get carriers: ${error.message}`);
+    }
   }
 }
